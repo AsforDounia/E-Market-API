@@ -1,0 +1,9 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const ProductCategorySchema = new Schema({
+    product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
+    category: { type: Schema.Types.ObjectId, ref: 'Category', required: true }
+}, { collection: 'product_categories', timestamps: true });
+
+module.exports = mongoose.model('ProductCategory', ProductCategorySchema);
