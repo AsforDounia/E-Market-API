@@ -50,4 +50,24 @@ async function getProductById(req, res) {
     }
 }
 
-module.exports = { getAllProducts, getProductById };
+async function createProduct(req, res) {
+    try {
+        const { title, description, price, stock, imageUrl, categoryIds } = req.body;
+        if (!title || !description || price == null || stock == null) {
+            return res.status(400).json({ message: 'Title, description, price, and stock are required' });
+        }
+        const product = new Product({ title, description, price, stock, imageUrl });
+        await product.save();
+        if (Array.isArray(categoryIds)) {
+            for (const categoryId of categoryIds) {
+                await ProductCategory.create({ product: product._id, category: categoryId });
+            }
+        }
+        res.status(201).json({ message: 'Product created', data: product });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error', error: err.message });
+    }
+}
+
+module.exports = { getAllProducts, getProductById, createProduct };
