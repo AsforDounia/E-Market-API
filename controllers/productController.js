@@ -99,4 +99,18 @@ async function updateProduct(req, res) {
     }
 }
 
-module.exports = { getAllProducts, getProductById, createProduct, updateProduct };
+async function deleteProduct(req, res) {
+    try {
+        const { id } = req.params;
+        const product = await Product.findById(id);
+        if (!product) return res.status(404).json({ message: 'Product not found' });
+        await ProductCategory.deleteMany({ product: product._id });
+        await product.deleteOne();
+        res.json({ message: 'Product deleted' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error', error: err.message });
+    }
+}
+
+module.exports = { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct };
