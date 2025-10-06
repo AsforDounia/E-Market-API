@@ -1,4 +1,5 @@
 const { Product, ProductCategory } = require('../models/Index');
+const { getProductCategories } = require('../services/productService');
 
 async function getAllProducts(req, res) {
     try {
@@ -6,11 +7,7 @@ async function getAllProducts(req, res) {
 
         const results = await Promise.all(
             products.map(async (product) => {
-
-                const links = await ProductCategory.find({ product: product._id }).populate({ path: 'category', strictPopulate: false });
-
-                const categories = links.map(link => link.category);
-
+                const categories = await getProductCategories(product._id);
                 return {
                     _id: product._id,
                     title: product.title,
@@ -29,5 +26,7 @@ async function getAllProducts(req, res) {
         res.status(500).json({ message: 'Server error', error: err.message });
     }
 }
+
+
 
 module.exports = { getAllProducts };
