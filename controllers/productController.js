@@ -57,8 +57,9 @@ async function createProduct(req, res) {
         if (!title || !description || price == null || stock == null) {
             return res.status(400).json({ message: 'Title, description, price, and stock are required' });
         }
-        const product = new Product({ title, description, price, stock, imageUrl });
-        await product.save();
+
+        const product = await Product.create({ title, description, price, stock, imageUrl });
+
         if (Array.isArray(categoryIds)) {
             for (const categoryId of categoryIds) {
                 await ProductCategory.create({ product: product._id, category: categoryId });
