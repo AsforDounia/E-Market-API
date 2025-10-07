@@ -1,21 +1,24 @@
-const express = require('express');
-const router = express.Router();
-const productController = require('../controllers/productController');
+import express from 'express';
 
+const productRoutes = express.Router();
+import * as productController from '../controllers/productController.js';
+import { validate } from '../middlewares/validate.js';
+import { createProductSchema, updateProductSchema } from '../middlewares/schemas/productSchema.js';
 
 // Récupérer tous les produits
-router.get('/', productController.getAllProducts);
+productRoutes.get('/', productController.getAllProducts);
 
 // Récupérer un produit par ID
-router.get('/:id', productController.getProductById);
+productRoutes.get('/:id', productController.getProductById);
 
 // Créer un nouveau produit
-router.post('/', productController.createProduct);
+productRoutes.post('/',validate( createProductSchema ) , productController.createProduct);
 
 // Mettre à jour un produit existant
-router.put('/:id', productController.updateProduct);
+productRoutes.put('/:id', validate( updateProductSchema ), productController.updateProduct);
 
 // Supprimer un produit
-router.delete('/:id', productController.deleteProduct);
+productRoutes.delete('/:id', productController.deleteProduct);
 
-module.exports = router;
+
+export default productRoutes;

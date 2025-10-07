@@ -1,5 +1,6 @@
-const { Product, ProductCategory } = require('../models/Index');
-const { getProductCategories } = require('../services/productService');
+import { Product, ProductCategory } from '../models/Index.js';
+import { getProductCategories } from '../services/productService.js';
+
 
 async function getAllProducts(req, res) {
     try {
@@ -20,7 +21,7 @@ async function getAllProducts(req, res) {
             })
         );
 
-        res.json(results);
+        res.status(200).json(results);
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error', error: err.message });
@@ -35,7 +36,7 @@ async function getProductById(req, res) {
 
         const categories = await getProductCategories(product._id);
 
-        res.json({
+        res.status(200).json({
             _id: product._id,
             title: product.title,
             description: product.description,
@@ -56,8 +57,9 @@ async function createProduct(req, res) {
         if (!title || !description || price == null || stock == null) {
             return res.status(400).json({ message: 'Title, description, price, and stock are required' });
         }
-        const product = new Product({ title, description, price, stock, imageUrl });
-        await product.save();
+
+        const product = await Product.create({ title, description, price, stock, imageUrl });
+
         if (Array.isArray(categoryIds)) {
             for (const categoryId of categoryIds) {
                 await ProductCategory.create({ product: product._id, category: categoryId });
@@ -92,7 +94,7 @@ async function updateProduct(req, res) {
                 await ProductCategory.create({ product: product._id, category: categoryId });
             }
         }
-        res.json({ message: 'Product updated', data: product });
+        res.status(200).json({ message: 'Product updated', data: product });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error', error: err.message });
@@ -104,13 +106,20 @@ async function deleteProduct(req, res) {
         const { id } = req.params;
         const product = await Product.findById(id);
         if (!product) return res.status(404).json({ message: 'Product not found' });
-        await ProductCategory.deleteMany({ product: product._id });
-        await product.deleteOne();
-        res.json({ message: 'Product deleted' });
+
+        product.deletedAt = new Date();
+        await product.save();
+
+        // mark related ProductCategory entries as deleted
+        await ProductCategory.updateMany(
+            { product: product._id },
+            { $set: { deletedAt: new Date() } }
+        );
+        res.status(200).json({ message: 'Product deleted' });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error', error: err.message });
     }
 }
 
-module.exports = { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct };
+export { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct };

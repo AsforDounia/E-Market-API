@@ -1,10 +1,11 @@
-const Product = require('./Product');
-const Category = require('./Category');
-const ProductCategory = require('./ProductCategory');
+import Product from './Product.js';
+import Category from './Category.js';
+import ProductCategory from './ProductCategory.js';
+import User from './User.js';
 
-
-module.exports = {
+export {
     Product,
     Category,
-    ProductCategory
+    ProductCategory,
+    User
 };

@@ -1,4 +1,4 @@
-const { ProductCategory } = require('../models/Index');
+import { ProductCategory } from '../models/Index.js';
 
 /**
  * Récupère les catégories d'un produit
@@ -11,4 +11,4 @@ async function getProductCategories(productId) {
     return links.map(link => link.category);
 }
 
-module.exports = { getProductCategories };
+export { getProductCategories };

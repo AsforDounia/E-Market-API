@@ -1,20 +1,24 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const productRoutes = require('./routes/productRoutes');
+import express from 'express';
+import connectDB from './config/database.js';
+import productRoutes from './routes/productRoutes.js';
+import usertRoutes from './routes/userRoutes.js';
+import categoryRoutes from './routes/categoryRoutes.js';
+import logger from './middlewares/logger.js';
+import notFound from './middlewares/notFound.js';
+import errorHandler from './middlewares/errorHandler.js';
 
-// Charger les variables d'environnement
-dotenv.config();
+
+
 
 const app = express();
 
+// Connexion à MongoDB
+connectDB();
+
 // Middleware pour parser JSON
 app.use(express.json());
+app.use(logger);
 
-// Connexion à MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.error("MongoDB Connection Error:", err));
 
 // Test route
 app.get("/", (req, res) => {
@@ -22,12 +26,21 @@ app.get("/", (req, res) => {
 });
 
 
-    
 // Utiliser les routes de produits
 app.use("/products", productRoutes);
 
-// Démarrage du serveur
+// Utiliser les routes d'utilisateurs
+app.use("/users", usertRoutes);
+
+// Utiliser les routes des categories
+app.use("/categories", categoryRoutes);
+
+
+
+app.use(notFound);
+app.use(errorHandler);
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
