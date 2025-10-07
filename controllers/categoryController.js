@@ -22,5 +22,26 @@ async function getCategoryById(req, res) {
     }
 }
 
+async function createCategory(req, res) {
+    try {
+        const { name, description } = req.body;
+        if (!name || !description) {
+            return res.status(400).json({ message: 'name and description are required' });
+        }
 
-export { getAllCategories, getCategoryById }
+        const existingCat = await Category.findOne({ name });
+        if (existingCat) {
+            return res.status(400).json({ message: 'Name already in use' });
+        }
+
+
+        const category = await Category.create({ name, description });
+
+        res.status(201).json(category);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error', error: err.message });
+    }
+}
+
+export { getAllCategories, getCategoryById, createCategory }
