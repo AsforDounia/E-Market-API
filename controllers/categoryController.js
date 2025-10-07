@@ -44,4 +44,31 @@ async function createCategory(req, res) {
     }
 }
 
-export { getAllCategories, getCategoryById, createCategory }
+
+async function updateCategory(req, res) {
+    try {
+        const { id } = req.params;
+        const { name, description } = req.body;
+
+        const category = await Category.findById(id);
+        if (!category) return res.status(404).json({ message: 'Category not found' });
+
+        if (name) {
+            const existingCat = await Category.findOne({ name });
+            if (existingCat && existingCat._id.toString() !== id) {
+                return res.status(400).json({ message: 'Name already in use' });
+            }
+            category.name = name;
+        }
+        if (description) category.description = description;
+
+        await category.save();
+        
+        res.status(200).json(category);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error', error: err.message });
+    }
+}
+
+export { getAllCategories, getCategoryById, createCategory, updateCategory }

@@ -23,9 +23,13 @@ const createProductSchema = Yup.object().shape({
 });
 
 const updateProductSchema = Yup.object().shape({
-  title: Yup.string().optional(),
+  title: Yup.string()
+  .trimField('Title')
+  .optional(),
 
-  description: Yup.string().optional(),
+  description: Yup.string()
+  .trimField('Description')
+  .optional(),
 
   price: Yup.number()
   .minValue(0, 'Price')

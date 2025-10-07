@@ -8,5 +8,9 @@ const createCategorySchema = Yup.object().shape({
     .requiredField('Description'),
 });
 
+const updateCategorySchema = Yup.object().shape({
+    name: Yup.string().trimField("Name"),
+    description: Yup.string().trimField("Description"),
+});
 
-export { createCategorySchema }
+export { createCategorySchema, updateCategorySchema }

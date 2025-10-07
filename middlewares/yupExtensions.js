@@ -52,4 +52,14 @@ Yup.addMethod(Yup.number, 'errorType', function (fieldName) {
 Yup.addMethod(Yup.string, 'urlField' , function(fieldName){
     return this.url(`${fieldName} must be a valid URL`);
 })
+
+
+Yup.addMethod(Yup.string, 'trimField', function(fieldName) {
+    return this.test(
+    'no-only-spaces',
+    `${fieldName} cannot be empty or contain only spaces`,
+    value => value === undefined || value.trim().length > 0
+  );
+});
+
 export { Yup } ;
