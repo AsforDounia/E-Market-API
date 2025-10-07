@@ -21,7 +21,7 @@ async function getAllProducts(req, res) {
             })
         );
 
-        res.json(results);
+        res.status(200).json(results);
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error', error: err.message });
@@ -36,7 +36,7 @@ async function getProductById(req, res) {
 
         const categories = await getProductCategories(product._id);
 
-        res.json({
+        res.status(200).json({
             _id: product._id,
             title: product.title,
             description: product.description,
@@ -94,7 +94,7 @@ async function updateProduct(req, res) {
                 await ProductCategory.create({ product: product._id, category: categoryId });
             }
         }
-        res.json({ message: 'Product updated', data: product });
+        res.status(200).json({ message: 'Product updated', data: product });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error', error: err.message });
@@ -115,7 +115,7 @@ async function deleteProduct(req, res) {
             { product: product._id },
             { $set: { deletedAt: new Date() } }
         );
-        res.json({ message: 'Product deleted' });
+        res.status(200).json({ message: 'Product deleted' });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error', error: err.message });

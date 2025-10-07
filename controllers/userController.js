@@ -3,7 +3,7 @@ import { User } from "../models/Index.js";
 async function getAllUsers(req, res) {
     try {
         const users = await User.find();
-        res.json(users);
+        res.status(200).json(users);
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error', error: err.message });
@@ -15,7 +15,7 @@ async function getUserById(req, res) {
         const { id } = req.params;
         const user = await User.findById(id);
         if (!user) return res.status(404).json({ message: 'User not found' });
-        res.json(user);
+        res.status(200).json(user);
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error', error: err.message });
@@ -56,7 +56,7 @@ async function deleteUser(req, res) {
         if (!user) return res.status(404).json({ message: 'User not found' });
         user.deletedAt = new Date();
         await user.save();
-        res.json({ message: 'User soft-deleted' });
+        res.status(200).json({ message: 'User soft-deleted' });
     }
     catch (err) {
         console.error(err);

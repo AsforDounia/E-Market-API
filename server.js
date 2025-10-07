@@ -2,6 +2,8 @@ import express from 'express';
 import connectDB from './config/database.js';
 import productRoutes from './routes/productRoutes.js';
 import usertRoutes from './routes/userRoutes.js';
+import categoryRoutes from './routes/categoryRoutes.js';
+
 
 
 
@@ -23,6 +25,9 @@ app.use("/products", productRoutes);
 
 // Utiliser les routes d'utilisateurs
 app.use("/users", usertRoutes);
+
+// Utiliser les routes des categories
+app.use("/categories", categoryRoutes);
 
 
 
