@@ -63,7 +63,7 @@ async function updateCategory(req, res) {
         if (description) category.description = description;
 
         await category.save();
-        
+
         res.status(200).json(category);
     } catch (err) {
         console.error(err);
@@ -71,4 +71,19 @@ async function updateCategory(req, res) {
     }
 }
 
-export { getAllCategories, getCategoryById, createCategory, updateCategory }
+async function deleteCategory(req, res) {
+    try {
+        const { id } = req.params;
+        const category = await Category.findById(id);
+        if (!category) return res.status(404).json({ message: 'Category not found' });
+
+        category.deletedAt = new Date();
+        await category.save();
+
+        res.status(200).json({ message: 'Category soft-deleted successfully' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error', error: err.message });
+    }
+}
+export { getAllCategories, getCategoryById, createCategory, updateCategory, deleteCategory }
