@@ -25,6 +25,7 @@ async function getCategoryById(req, res) {
 async function createCategory(req, res) {
     try {
         const { name, description } = req.body;
+
         if (!name || !description) {
             return res.status(400).json({ message: 'name and description are required' });
         }
@@ -45,22 +46,39 @@ async function createCategory(req, res) {
 }
 
 
-async function updateCategory(req, res) {
+async function updateCategory(req, res, next) {
     try {
         const { id } = req.params;
-        const { name, description } = req.body;
+        let { name, description } = req.body;
 
         const category = await Category.findById(id);
         if (!category) return res.status(404).json({ message: 'Category not found' });
 
         if (name) {
+
+            name = name.trim();
+
+            if (!name) {
+                return res.status(400).json({ message: 'Name cannot be empty' });
+            }
+
             const existingCat = await Category.findOne({ name });
             if (existingCat && existingCat._id.toString() !== id) {
                 return res.status(400).json({ message: 'Name already in use' });
             }
             category.name = name;
         }
-        if (description) category.description = description;
+        if (description) {
+            description = description.trim();
+
+            if (!description) {
+                const error = new Error('Description cannot be empty');
+                error.statusCode = 400;
+                return next(error);
+                // return res.status(400).json({ message: 'Description cannot be empty' });
+            }
+            category.description = description;
+        }
 
         await category.save();
 

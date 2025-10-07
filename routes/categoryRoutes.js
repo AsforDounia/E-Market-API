@@ -15,7 +15,7 @@ categoryRoutes.get('/:id', categoryController.getCategoryById);
 categoryRoutes.post('/', validate(createCategorySchema), categoryController.createCategory);
 
 // Mettre à jour une categorie existant
-categoryRoutes.put('/:id', validate(updateCategorySchema), categoryController.updateCategory);
+categoryRoutes.put('/:id', categoryController.updateCategory);
 
 // Supprimer une categorie (soft delete)
 categoryRoutes.delete('/:id', categoryController.deleteCategory);

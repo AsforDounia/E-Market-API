@@ -3,15 +3,21 @@ import connectDB from './config/database.js';
 import productRoutes from './routes/productRoutes.js';
 import usertRoutes from './routes/userRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
+import logger from './middlewares/logger.js';
+import notFound from './middlewares/notFound.js';
+import errorHandler from './middlewares/errorHandler.js';
 
 
 
 
 const app = express();
 
+// Connexion à MongoDB
+connectDB();
+
 // Middleware pour parser JSON
 app.use(express.json());
-
+app.use(logger);
 
 
 // Test route
@@ -31,8 +37,8 @@ app.use("/categories", categoryRoutes);
 
 
 
-// Connexion à MongoDB
-connectDB();
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
