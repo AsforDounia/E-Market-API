@@ -10,17 +10,39 @@ const createProductSchema = Yup.object().shape({
   price: Yup.number()
     .requiredField('Price')
     .minValue(0, 'Price')
-    .typeError('Price must be a number'),
+    .errorType('Price'),
   
   stock: Yup.number()
     .requiredField('Stock')
     .minValue(0, 'Stock')
-    .typeError('Stock must be a number'),
+    .errorType('Stock'),
   
   imageUrl: Yup.string()
-    .url('Image URL must be a valid URL')
+    .urlField('imageUrl')
     .optional()
 });
 
+const updateProductSchema = Yup.object().shape({
+  title: Yup.string().optional(),
 
-export { createProductSchema }
+  description: Yup.string().optional(),
+
+  price: Yup.number()
+  .minValue(0, 'Price')
+  .errorType('Price')
+  .optional(),
+
+  stock: Yup.number()
+  .minValue(0, 'Stock')
+  .errorType('Stock')
+  .optional(),
+
+  imageUrl: Yup.string()
+  .urlField('imageUrl')
+  .optional(),
+
+  categoryIds: Yup.array().of(Yup.string()).optional(),
+});
+
+
+export { createProductSchema , updateProductSchema}

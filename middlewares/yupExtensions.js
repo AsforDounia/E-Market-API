@@ -44,5 +44,12 @@ Yup.addMethod(Yup.number, 'maxValue', function(value, fieldName) {
 });
 
 
+Yup.addMethod(Yup.number, 'errorType', function (fieldName) {
+    return this.typeError(`${fieldName} must be a valid number`);
+});
 
+
+Yup.addMethod(Yup.string, 'urlField' , function(fieldName){
+    return this.url(`${fieldName} must be a valid URL`);
+})
 export { Yup } ;
