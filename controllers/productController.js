@@ -1,5 +1,7 @@
 import { Product, ProductCategory } from '../models/Index.js';
 import { getProductCategories } from '../services/productService.js';
+
+
 async function getAllProducts(req, res) {
     try {
         const products = await Product.find();

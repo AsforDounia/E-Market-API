@@ -1,9 +1,8 @@
-// const express = require('express');
-// const productRoutes = require('./routes/productRoutes');
-// const connectDB = require('./config/database');
 import express from 'express';
-import productRoutes from './routes/productRoutes.js';
 import connectDB from './config/database.js';
+import productRoutes from './routes/productRoutes.js';
+import usertRoutes from './routes/userRoutes.js';
+
 
 
 const app = express();
@@ -21,6 +20,9 @@ app.get("/", (req, res) => {
 
 // Utiliser les routes de produits
 app.use("/products", productRoutes);
+
+// Utiliser les routes d'utilisateurs
+app.use("/users", usertRoutes);
 
 
 
