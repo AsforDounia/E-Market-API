@@ -6,7 +6,8 @@ const ProductSchema = new Schema({
     description: { type: String, required: true, trim: true },
     price: { type: Number, required: true, min: 0 },
     stock: { type: Number, required: true, min: 0 },
-    imageUrl: { type: String, default: '' }
+    imageUrl: { type: String, default: '' },
+    deletedAt: { type: Date, default: null }
 }, {
     collection: 'products',
     timestamps: true

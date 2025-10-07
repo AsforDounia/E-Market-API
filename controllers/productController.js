@@ -104,8 +104,15 @@ async function deleteProduct(req, res) {
         const { id } = req.params;
         const product = await Product.findById(id);
         if (!product) return res.status(404).json({ message: 'Product not found' });
-        await ProductCategory.deleteMany({ product: product._id });
-        await product.deleteOne();
+
+        product.deletedAt = new Date();
+        await product.save();
+
+        // mark related ProductCategory entries as deleted
+        await ProductCategory.updateMany(
+            { product: product._id },
+            { $set: { deletedAt: new Date() } }
+        );
         res.json({ message: 'Product deleted' });
     } catch (err) {
         console.error(err);
