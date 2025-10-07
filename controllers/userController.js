@@ -47,4 +47,21 @@ async function createUser(req, res) {
         res.status(500).json({ message: 'Server error', error: err.message });
     }
 }
-export { getAllUsers, getUserById, createUser };
+
+
+async function deleteUser(req, res) {
+    try {
+        const { id } = req.params;
+        const user = await User.findById(id);
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        user.deletedAt = new Date();
+        await user.save();
+        res.json({ message: 'User soft-deleted' });
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error', error: err.message });
+    }
+}
+
+export { getAllUsers, getUserById, createUser, deleteUser };

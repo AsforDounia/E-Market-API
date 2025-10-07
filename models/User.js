@@ -4,13 +4,11 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     fullname: {
         type: String,
-        required: [true, 'Full name is required'],
-        trim: [true, 'Full name cannot be empty']
+        required: [true, 'Full name is required']
     },
     email: {
         type: String,
         required: [true, 'Email is required'],
-        trim: [true, 'Email cannot be empty'],
         unique: true,
         match: [/.+\@.+\..+/, 'Please fill a valid email address']
     },
@@ -21,7 +19,9 @@ const UserSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ['user', 'admin'],
+        // enum: ['user', 'admin'], return msg
+        enum: { values: ['user', 'admin'], message: 'Role must be either user or admin' },
+
         default: 'user'
     },
     deletedAt: { type: Date, default: null }
