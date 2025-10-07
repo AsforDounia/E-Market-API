@@ -4,8 +4,7 @@ const Schema = mongoose.Schema;
 const ProductSchema = new Schema({
     title: {
         type: String,
-        required: [true, 'Title is required'],
-        trim: [true, 'Title cannot be empty']
+        required: [true, 'Title is required']
     },
     description: {
         type: String,

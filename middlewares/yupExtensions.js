@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 
 
+// String validation methods
 Yup.addMethod(Yup.string, 'requiredField', function(fieldName) {
   return this.required(`${fieldName} is required`).trim();
 });
@@ -26,6 +27,20 @@ Yup.addMethod(Yup.string, 'enumField', function(values, fieldName) {
     values,
     `${fieldName} must be one of: ${valuesList}`
   );
+});
+
+
+// Number validation methods
+Yup.addMethod(Yup.number, 'requiredField', function(fieldName) {
+  return this.required(`${fieldName} is required`);
+});
+
+Yup.addMethod(Yup.number, 'minValue', function(value, fieldName) {
+  return this.min(value, `${fieldName} must be at least ${value}`);
+});
+
+Yup.addMethod(Yup.number, 'maxValue', function(value, fieldName) {
+  return this.max(value, `${fieldName} must not exceed ${value}`);
 });
 
 
