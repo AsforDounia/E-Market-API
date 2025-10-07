@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const ProductCategorySchema = new Schema({
@@ -7,4 +7,4 @@ const ProductCategorySchema = new Schema({
     deletedAt: { type: Date, default: null }
 }, { collection: 'product_categories', timestamps: true });
 
-module.exports = mongoose.model('ProductCategory', ProductCategorySchema);
+export default mongoose.model('ProductCategory', ProductCategorySchema);

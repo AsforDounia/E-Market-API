@@ -1,6 +1,5 @@
-const { Product, ProductCategory } = require('../models/Index');
-const { getProductCategories } = require('../services/productService');
-
+import { Product, ProductCategory } from '../models/Index.js';
+import { getProductCategories } from '../services/productService.js';
 async function getAllProducts(req, res) {
     try {
         const products = await Product.find();
@@ -120,4 +119,4 @@ async function deleteProduct(req, res) {
     }
 }
 
-module.exports = { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct };
+export { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct };

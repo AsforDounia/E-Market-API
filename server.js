@@ -1,10 +1,10 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const productRoutes = require('./routes/productRoutes');
-const connectDB = require('./config/database');
+// const express = require('express');
+// const productRoutes = require('./routes/productRoutes');
+// const connectDB = require('./config/database');
+import express from 'express';
+import productRoutes from './routes/productRoutes.js';
+import connectDB from './config/database.js';
 
-// Charger les variables d'environnement
-dotenv.config();
 
 const app = express();
 
@@ -19,7 +19,6 @@ app.get("/", (req, res) => {
 });
 
 
-    
 // Utiliser les routes de produits
 app.use("/products", productRoutes);
 
