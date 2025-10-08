@@ -2,7 +2,7 @@ import { Product, ProductCategory } from '../models/Index.js';
 import { getProductCategories } from '../services/productService.js';
 
 
-async function getAllProducts(req, res) {
+async function getAllProducts(req, res, next) {
     try {
         const products = await Product.find();
 
@@ -23,16 +23,15 @@ async function getAllProducts(req, res) {
 
         res.status(200).json(results);
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server error', error: err.message });
+       next(err);
     }
 }
 
-async function getProductById(req, res) {
+async function getProductById(req, res, next) {
     try {
         const { id } = req.params;
         const product = await Product.findById(id);
-        if (!product) return res.status(404).json({ message: 'Product not found' });
+        if (!product) throw new AppError("Product not found", 404);
 
         const categories = await getProductCategories(product._id);
 
@@ -46,17 +45,14 @@ async function getProductById(req, res) {
             categories
         });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server error', error: err.message });
+        next(err);
     }
 }
 
-async function createProduct(req, res) {
+async function createProduct(req, res, next) {
     try {
         const { title, description, price, stock, imageUrl, categoryIds } = req.body;
-        if (!title || !description || price == null || stock == null) {
-            return res.status(400).json({ message: 'Title, description, price, and stock are required' });
-        }
+        if (!title || !description || price == null || stock == null) throw new AppError("Title, description, price, and stock are required", 400);
 
         const product = await Product.create({ title, description, price, stock, imageUrl });
 
@@ -65,21 +61,22 @@ async function createProduct(req, res) {
                 await ProductCategory.create({ product: product._id, category: categoryId });
             }
         }
+
         res.status(201).json({ message: 'Product created', data: product });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server error', error: err.message });
+        next(err);
     }
 }
 
 
 
-async function updateProduct(req, res) {
+async function updateProduct(req, res, next) {
     try {
         const { id } = req.params;
         const { title, description, price, stock, imageUrl, categoryIds } = req.body;
         const product = await Product.findById(id);
-        if (!product) return res.status(404).json({ message: 'Product not found' });
+        if (!product) throw new AppError("Product not found", 404);
+
         if (title) product.title = title;
         if (description) product.description = description;
         if (price != null) product.price = price;
@@ -96,16 +93,15 @@ async function updateProduct(req, res) {
         }
         res.status(200).json({ message: 'Product updated', data: product });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server error', error: err.message });
+        next(err);
     }
 }
 
-async function deleteProduct(req, res) {
+async function deleteProduct(req, res, next) {
     try {
         const { id } = req.params;
         const product = await Product.findById(id);
-        if (!product) return res.status(404).json({ message: 'Product not found' });
+        if (!product) throw new AppError("Product not found", 404);
 
         product.deletedAt = new Date();
         await product.save();
@@ -117,8 +113,7 @@ async function deleteProduct(req, res) {
         );
         res.status(200).json({ message: 'Product deleted' });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server error', error: err.message });
+        next(err);
     }
 }
 

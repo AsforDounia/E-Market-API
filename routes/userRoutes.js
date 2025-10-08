@@ -1,7 +1,7 @@
 import express from 'express';
 import * as usertController from '../controllers/userController.js';
-import { validate } from '../middlewares/validate.js';
-import { createUserSchema } from '../middlewares/schemas/userSchema.js';
+import { validate } from '../middlewares/validation/validate.js';
+import { createUserSchema } from '../middlewares/validation/schemas/userSchema.js';
 
 const usertRoutes = express.Router();
 
