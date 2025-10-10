@@ -6,6 +6,7 @@ import categoryRoutes from './routes/categoryRoutes.js';
 import logger from './middlewares/logger.js';
 import notFound from './middlewares/notFound.js';
 import errorHandler from './middlewares/errorHandler.js';
+import { swaggerUi, specs } from './swagger/swagger.js';
 
 
 
@@ -24,6 +25,9 @@ app.use(logger);
 app.get("/", (req, res) => {
   res.send("E-Market API is running!");
 });
+
+// Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 
 // Utiliser les routes de produits
