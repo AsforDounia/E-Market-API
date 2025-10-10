@@ -1,10 +1,32 @@
-import { Product, ProductCategory } from '../models/Index.js';
+import { Product, ProductCategory, Category } from '../models/Index.js';
 import { getProductCategories } from '../services/productService.js';
+import mongoose from 'mongoose';
+import {AppError} from "../middlewares/errorHandler.js";
 
 
 async function getAllProducts(req, res, next) {
     try {
-        const products = await Product.find();
+        const { search, category, minPrice, maxPrice, inStock } = req.query;
+        
+        const filter = {};
+        if (search) filter.$or = [{ title: { $regex: search, $options: 'i' } }, { description: { $regex: search, $options: 'i' } }];
+        if (minPrice || maxPrice) filter.price = { ...(minPrice && { $gte: Number(minPrice) }), ...(maxPrice && { $lte: Number(maxPrice) }) };
+        if (inStock === 'true') filter.stock = { $gt: 0 };
+        
+        let products = await Product.find(filter);
+        
+        if (category) {
+            const isValidObjectId = mongoose.Types.ObjectId.isValid(category);
+            const categoryDoc = isValidObjectId 
+                ? await Category.findById(category)
+                : await Category.findOne({ name: { $regex: category, $options: 'i' } });
+            
+            if (categoryDoc) {
+                const categoryProducts = await ProductCategory.find({ category: categoryDoc._id }).populate('product');
+                const categoryProductIds = categoryProducts.map(pc => pc.product._id.toString());
+                products = products.filter(p => categoryProductIds.includes(p._id.toString()));
+            }
+        }
 
         const results = await Promise.all(
             products.map(async (product) => {
