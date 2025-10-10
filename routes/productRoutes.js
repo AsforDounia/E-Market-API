@@ -2,8 +2,8 @@ import express from 'express';
 
 const productRoutes = express.Router();
 import * as productController from '../controllers/productController.js';
-import { validate } from '../middlewares/validate.js';
-import { createProductSchema, updateProductSchema } from '../middlewares/schemas/productSchema.js';
+import { validate } from '../middlewares/validation/validate.js';
+import { createProductSchema, updateProductSchema } from '../middlewares/validation/schemas/productSchema.js';
 
 /**
  * @swagger

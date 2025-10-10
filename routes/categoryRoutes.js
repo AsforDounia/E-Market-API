@@ -2,8 +2,8 @@ import express from 'express';
 
 const categoryRoutes = express.Router();
 import * as categoryController from '../controllers/categoryController.js';
-import { validate } from '../middlewares/validate.js';
-import { createCategorySchema, updateCategorySchema } from '../middlewares/schemas/categorySchema.js';
+import { validate } from '../middlewares/validation/validate.js';
+import { createCategorySchema, updateCategorySchema } from '../middlewares/validation/schemas/categorySchema.js';
 
 // Récupérer tous les categories
 categoryRoutes.get('/', categoryController.getAllCategories);
