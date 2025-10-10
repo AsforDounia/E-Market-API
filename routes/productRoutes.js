@@ -58,17 +58,53 @@ import { createProductSchema, updateProductSchema } from '../middlewares/validat
  * @swagger
  * /products:
  *   get:
- *     summary: Get all products
+ *     summary: Get all products with search and filters
  *     tags: [Products]
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Search in product title and description
+ *       - in: query
+ *         name: category
+ *         schema:
+ *           type: string
+ *         description: Filter by category name or category ID
+ *       - in: query
+ *         name: minPrice
+ *         schema:
+ *           type: number
+ *         description: Minimum price filter
+ *       - in: query
+ *         name: maxPrice
+ *         schema:
+ *           type: number
+ *         description: Maximum price filter
+ *       - in: query
+ *         name: inStock
+ *         schema:
+ *           type: boolean
+ *         description: Filter products in stock (true/false)
  *     responses:
  *       200:
- *         description: List of products
+ *         description: List of products (filtered if parameters provided)
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Product'
+ *             example:
+ *               - _id: "507f1f77bcf86cd799439011"
+ *                 title: "Laptop"
+ *                 description: "High performance laptop"
+ *                 price: 999.99
+ *                 stock: 10
+ *                 imageUrl: "https://example.com/laptop.jpg"
+ *                 categories:
+ *                   - _id: "507f1f77bcf86cd799439012"
+ *                     name: "Electronics"
  */
 
 
