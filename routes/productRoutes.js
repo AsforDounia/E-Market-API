@@ -53,6 +53,7 @@ import { createProductSchema, updateProductSchema } from '../middlewares/schemas
  *               items:
  *                 $ref: '#/components/schemas/Product'
  */
+
 productRoutes.get('/', productController.getAllProducts);
 
 /**
