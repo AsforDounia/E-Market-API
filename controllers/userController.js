@@ -1,4 +1,5 @@
 import { User } from "../models/Index.js";
+import {AppError} from "../middlewares/errorHandler.js";
 
 async function getAllUsers(req, res, next) {
     try {

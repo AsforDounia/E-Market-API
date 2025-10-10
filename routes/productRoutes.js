@@ -32,10 +32,26 @@ import { createProductSchema, updateProductSchema } from '../middlewares/validat
  *           minimum: 0
  *         imageUrl:
  *           type: string
- *         categoryIds:
+ *           default: ''
+ *         deletedAt:
+ *           type: string
+ *           format: date-time
+ *           nullable: true
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *         categories:
  *           type: array
  *           items:
- *             type: string
+ *             type: object
+ *             properties:
+ *               _id:
+ *                 type: string
+ *               name:
+ *                 type: string
  */
 
 /**

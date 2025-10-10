@@ -1,11 +1,11 @@
 import express from 'express';
 import connectDB from './config/database.js';
 import productRoutes from './routes/productRoutes.js';
-import usertRoutes from './routes/userRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 import logger from './middlewares/logger.js';
 import notFound from './middlewares/notFound.js';
-import errorHandler from './middlewares/errorHandler.js';
+import { errorHandler } from './middlewares/errorHandler.js';
 import { swaggerUi, specs } from './swagger/swagger.js';
 
 
@@ -35,7 +35,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use("/products", productRoutes);
 
 // Utiliser les routes d'utilisateurs
-app.use("/users", usertRoutes);
+app.use("/users", userRoutes);
 
 // Utiliser les routes des categories
 app.use("/categories", categoryRoutes);
