@@ -5,6 +5,7 @@ import * as productController from '../controllers/productController.js';
 import { validate } from '../middlewares/validation/validate.js';
 import { createProductSchema, updateProductSchema } from '../middlewares/validation/schemas/productSchema.js';
 
+
 /**
  * @swagger
  * components:
@@ -53,6 +54,7 @@ import { createProductSchema, updateProductSchema } from '../middlewares/validat
  *               items:
  *                 $ref: '#/components/schemas/Product'
  */
+
 
 productRoutes.get('/', productController.getAllProducts);
 
