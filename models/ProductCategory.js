@@ -7,4 +7,8 @@ const ProductCategorySchema = new Schema({
     deletedAt: { type: Date, default: null }
 }, { collection: 'product_categories', timestamps: true });
 
+// Compound index for unique pairs and fast queries
+ProductCategorySchema.index({ product: 1, category: 1 }, { unique: true });
+ProductCategorySchema.index({ category: 1 });
+
 export default mongoose.model('ProductCategory', ProductCategorySchema);
