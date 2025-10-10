@@ -5,7 +5,7 @@ import usertRoutes from './routes/userRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 import logger from './middlewares/logger.js';
 import notFound from './middlewares/notFound.js';
-import errorHandler from './middlewares/errorHandler.js';
+import { errorHandler } from './middlewares/errorHandler.js';
 
 
 
