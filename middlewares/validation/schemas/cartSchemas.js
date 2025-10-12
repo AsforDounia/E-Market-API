@@ -8,5 +8,10 @@ const addToCartSchema = Yup.object().shape({
         .requiredField('Quantity')
 });
 
+const updateCartItemSchema = Yup.object().shape({
+    quantity: Yup.number()
+        .minValue(1, 'Quantity')
+        .requiredField('Quantity')
+});
 
-export { addToCartSchema }
+export { addToCartSchema, updateCartItemSchema }
