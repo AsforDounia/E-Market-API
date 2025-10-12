@@ -17,8 +17,8 @@ const createProductSchema = Yup.object().shape({
     .minValue(0, 'Stock')
     .errorType('Stock'),
   
-  imageUrl: Yup.string()
-    .urlField('imageUrl')
+  imageUrls: Yup.array()
+    .of(Yup.string().urlField('imageUrl'))
     .optional()
 });
 
@@ -41,8 +41,8 @@ const updateProductSchema = Yup.object().shape({
   .errorType('Stock')
   .optional(),
 
-  imageUrl: Yup.string()
-  .urlField('imageUrl')
+  imageUrls: Yup.array()
+  .of(Yup.string().urlField('imageUrl'))
   .optional(),
 
   categoryIds: Yup.array().of(Yup.string()).optional(),

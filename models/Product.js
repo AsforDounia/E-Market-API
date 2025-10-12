@@ -21,9 +21,9 @@ const ProductSchema = new Schema({
         required: [true, 'Stock is required'],
         min: [0, 'Stock cannot be negative']
     },
-    imageUrl: {
-        type: String,
-        default: ''
+    imageUrls: {
+        type: [String],
+        default: []
     },
     deletedAt: {
         type: Date,
