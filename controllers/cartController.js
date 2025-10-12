@@ -39,3 +39,25 @@ export const addToCart = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getCart = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+
+        const cart = await Cart.findOne({ userId }).populate('items.productId', 'title price stock imageUrl');
+
+        if (!cart) {
+            return res.status(200).json({
+                message: 'Cart is empty',
+                cart: { items: [], totalAmount: 0 }
+            });
+        }
+
+        res.status(200).json({
+            message: 'Cart retrieved successfully',
+            cart
+        });
+    } catch (error) {
+        next(error);
+    }
+};

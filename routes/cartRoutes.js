@@ -7,5 +7,6 @@ import {addToCartSchema} from "../middlewares/validation/schemas/cartSchemas.js"
 const router = express.Router();
 
 router.post('/add', authenticate, validate(addToCartSchema), cartController.addToCart);
+router.get('/', authenticate, cartController.getCart);
 
 export default router;
