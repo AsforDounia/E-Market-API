@@ -74,7 +74,11 @@ async function seedDatabase() {
         // console.log('Cleared existing data');
 
         // Insert users
-        const users = await User.insertMany(seedData.users);
+        const users = [];
+        for (const userData of seedData.users) {
+            const user = await User.create(userData);
+            users.push(user);
+        }
         console.log(`✓ Inserted ${users.length} users`);
 
         // Insert categories

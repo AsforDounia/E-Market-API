@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { User } from '../models/Index.js';
+import { User, TokenBlacklist } from '../models/Index.js';
 import { AppError } from '../middlewares/errorHandler.js';
 
 export const register = async (req, res, next) => {
@@ -38,6 +38,23 @@ export const login = async (req, res, next) => {
             token,
             user: { id: user._id, fullname: user.fullname, email: user.email, role: user.role }
         });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const logout = async (req, res, next) => {
+    try {
+        const token = req.headers.authorization?.split(' ')[1] || req.cookies?.token;
+        if (!token) throw new AppError('No token provided', 401);
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        await TokenBlacklist.create({
+            token,
+            expiresAt: new Date(decoded.exp * 1000)
+        });
+
+        res.json({ message: 'Logged out successfully' });
     } catch (error) {
         next(error);
     }
