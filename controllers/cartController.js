@@ -111,3 +111,22 @@ export const updateCartItem = async (req, res, next) => {
         next(error);
     }
 };
+
+export const clearCart = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+
+        const cart = await Cart.findOne({ userId });
+        if (!cart) throw new AppError('Cart not found', 404);
+
+        cart.items = [];
+        await cart.save();
+
+        res.status(200).json({
+            message: 'Cart cleared successfully',
+            cart
+        });
+    } catch (error) {
+        next(error);
+    }
+};
