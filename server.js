@@ -4,6 +4,7 @@ import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import cartRoutes from './routes/cartRoutes.js';
 import logger from './middlewares/logger.js';
 import notFound from './middlewares/notFound.js';
 import { errorHandler } from './middlewares/errorHandler.js';
@@ -44,6 +45,9 @@ app.use("/categories", categoryRoutes);
 
 // Utiliser les routes d'authentification
 app.use("/auth", authRoutes);
+
+// Utiliser les routes du panier
+app.use("/cart", cartRoutes);
 
 
 
