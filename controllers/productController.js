@@ -37,7 +37,7 @@ async function getAllProducts(req, res, next) {
                     description: product.description,
                     price: product.price,
                     stock: product.stock,
-                    imageUrl: product.imageUrl,
+                    imageUrls: product.imageUrls,
                     categories
                 };
             })
@@ -63,7 +63,7 @@ async function getProductById(req, res, next) {
             description: product.description,
             price: product.price,
             stock: product.stock,
-            imageUrl: product.imageUrl,
+            imageUrls: product.imageUrls,
             categories
         });
     } catch (err) {
@@ -73,10 +73,10 @@ async function getProductById(req, res, next) {
 
 async function createProduct(req, res, next) {
     try {
-        const { title, description, price, stock, imageUrl, categoryIds } = req.body;
+        const { title, description, price, stock, imageUrls, categoryIds } = req.body;
         if (!title || !description || price == null || stock == null) throw new AppError("Title, description, price, and stock are required", 400);
 
-        const product = await Product.create({ title, description, price, stock, imageUrl });
+        const product = await Product.create({ title, description, price, stock, imageUrls });
 
         if (Array.isArray(categoryIds)) {
             for (const categoryId of categoryIds) {
@@ -95,7 +95,7 @@ async function createProduct(req, res, next) {
 async function updateProduct(req, res, next) {
     try {
         const { id } = req.params;
-        const { title, description, price, stock, imageUrl, categoryIds } = req.body;
+        const { title, description, price, stock, imageUrls, categoryIds } = req.body;
         const product = await Product.findById(id);
         if (!product) throw new AppError("Product not found", 404);
 
@@ -103,7 +103,7 @@ async function updateProduct(req, res, next) {
         if (description) product.description = description;
         if (price != null) product.price = price;
         if (stock != null) product.stock = stock;
-        if (imageUrl) product.imageUrl = imageUrl;
+        if (imageUrls) product.imageUrls = imageUrls;
 
         await product.save();
 
